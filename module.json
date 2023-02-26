@@ -27,7 +27,7 @@
   ],
   "dependencies": [
     {
-      "name": "_chatcommands",
+      "id": "_chatcommands",
       "type": "module",
       "manifest": "https://github.com/League-of-Foundry-Developers/Chat-Commands-Lib/releases/latest/download/module.json"
     }
