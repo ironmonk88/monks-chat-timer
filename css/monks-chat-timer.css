@@ -1,0 +1,47 @@
+.timer-msg .timer-time{
+    text-align:center;
+    font-size:24px;
+}
+
+.timer-msg .timer-bar{
+    width:100%;
+    height:17px;
+    border:1px solid #808080;
+    border-radius:4px;
+    background-color: rgba(0, 0, 0, 0.2);
+    position:relative;
+    overflow:hidden;
+    margin:4px 0px;
+}
+
+.timer-msg .timer-bar div {
+    border-radius: 4px;
+    background: #5d49ff;
+    width: 50%;
+    height: 100%;
+}
+
+.timer-msg .complete-msg{
+    display:none;
+    text-align:center;
+    padding:4px;
+}
+
+.timer-msg.complete .timer-bar{
+    display:none;
+}
+
+.timer-msg.complete .complete-msg {
+    display: block;
+}
+
+.timer-msg .timer-flavor {
+    border-top: 2px groove #FFF;
+    border-bottom: 2px groove #FFF;
+    padding: 4px 0px;
+}
+
+.timer-msg .timer-flavor:empty{
+    border-bottom:none;
+    height:1px;
+}
