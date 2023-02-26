@@ -34,7 +34,7 @@
   ],
   "url": "https://github.com/ironmonk88/monks-chat-timer",
   "download": "https://github.com/ironmonk88/monks-chat-timer/archive/10.1.zip",
-  "manifest": "https://github.com/League-of-Foundry-Developers/Chat-Commands-Lib/releases/latest/download/module.json",
+  "manifest": "https://github.com/ironmonk88/monks-chat-timer/releases/latest/download/module.json",
   "bugs": "https://github.com/ironmonk88/monks-chat-timer/issues",
   "id": "monks-chat-timer",
   "compatibility": {
