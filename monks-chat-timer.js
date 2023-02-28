@@ -234,7 +234,7 @@ Hooks.on("setupTileActions", (app) => {
                 options.whisper = Array.from(new Set(ChatMessage.getWhisperRecipients("GM").map(u => u.id).concat(tokenOwners)));
             }
 
-            ChatTimer.createTimer(action.data.duration, options);
+            MonksChatTimer.createTimer(action.data.duration, options);
         },
         content: async (trigger, action) => {
             return `<span class="logic-style">${trigger.name}</span> count <span class="details-style">"${action.data.duration}"</span> for <span class="value-style">&lt;${i18n(trigger.values.for[action.data?.for])}&gt;</span>`;
