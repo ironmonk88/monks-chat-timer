@@ -1,6 +1,4 @@
 # Monk's Chat Timer
-Add-On Module for Foundry VTT
-
 Create a chat card to display a count down timer, allows you to either count up, or count down.  Display a message to the chat card, and send a followup message when the timer finishes.
 
 ## Installation
@@ -26,7 +24,13 @@ Enter a chat command to create a chat card with a timer
 - `/timer -5` will count down 5 seconds
 - `/timer 5:00 Send this message to the timer (Send this message after the timer is finished)` will add a timer that counts up 5 minutes, displaying the first message in the chat message with the timer.  And once the timer it complete it will send a second chat message with the second message that's in parenthesis.
 
+### Popout
+
 You can also right cick on the chat card to pop it out in it's own window.  That way you can keep track of timers that are currently running.
+
+## Monk's Little Details
+
+This feature was previously part of the Monk's Little Details module, but was split out so that the modules were easier to maintain and could concentrate on the function they did best.
 
 ## Bug Reporting
 Please feel free to contact me on discord if you have any questions or concerns. ironmonk88#4075
