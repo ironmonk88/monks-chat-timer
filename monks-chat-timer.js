@@ -62,7 +62,15 @@ export class MonksChatTimer {
             speaker: speaker,
             type: CONST.CHAT_MESSAGE_TYPES.OOC,
             content: content,
-            flags: { 'monks-chat-timer': { time: calcTime, start: Date.now(), flavor: options.flavor, followup: options.followup } }
+            flags: {
+                core: { canPopout: true },
+                'monks-chat-timer': {
+                    time: calcTime,
+                    start: Date.now(),
+                    flavor: options.flavor,
+                    followup: options.followup
+                }
+            }
         };
 
         if (options.whisper)
@@ -97,7 +105,15 @@ Hooks.on("chatCommandsReady", (chatCommands) => {
                 followup = followup.substr(1, followup.length - 2).trim();
             }
 
-            chatdata.flags = { 'monks-chat-timer': { time: time, start: Date.now(), flavor: flavor, followup: followup } };
+            chatdata.flags = {
+                core: { canPopout: true },
+                'monks-chat-timer': {
+                    time: time,
+                    start: Date.now(),
+                    flavor: flavor,
+                    followup: followup
+                }
+            };
             let frmtTime = new Date(time < 0 ? 0 : time).toISOString().substr(11, 8);
             return '<div class="timer-msg"><div class="timer-flavor">' + flavor + '</div><div class="timer-time">' + frmtTime + '</div><div class="timer-bar"><div></div></div><div class="complete-msg">Complete</div></div>';
         },
