@@ -6,7 +6,7 @@
     {
       "name": "IronMonk",
       "discord": "ironmonk88#4075",
-      "patreon": "https://www.patreon.com/ironmonk",
+	  "patreon": "https://www.patreon.com/ironmonk",
       "ko-fi": "https://ko-fi.com/ironmonk88"
     }
   ],
@@ -25,13 +25,6 @@
   "styles": [
     "css/monks-chat-timer.css"
   ],
-  "dependencies": [
-    {
-      "id": "_chatcommands",
-      "type": "module",
-      "manifest": "https://github.com/League-of-Foundry-Developers/Chat-Commands-Lib/releases/latest/download/module.json"
-    }
-  ],
   "url": "https://github.com/ironmonk88/monks-chat-timer",
   "download": "https://github.com/ironmonk88/monks-chat-timer/archive/10.1.zip",
   "manifest": "https://github.com/ironmonk88/monks-chat-timer/releases/latest/download/module.json",
@@ -40,5 +33,15 @@
   "compatibility": {
     "minimum": "10",
     "verified": "10"
+  },
+  "relationships": {
+    "requires": [
+      {
+        "id": "_chatcommands",
+        "type": "module",
+        "manifest": "https://github.com/League-of-Foundry-Developers/Chat-Commands-Lib/releases/latest/download/module.json",
+        "compatibility": {}
+      }
+    ]
   }
 }
