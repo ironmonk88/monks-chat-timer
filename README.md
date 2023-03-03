@@ -24,6 +24,8 @@ Enter a chat command to create a chat card with a timer
 - `/timer -5` will count down 5 seconds
 - `/timer 5:00 Send this message to the timer (Send this message after the timer is finished)` will add a timer that counts up 5 minutes, displaying the first message in the chat message with the timer.  And once the timer it complete it will send a second chat message with the second message that's in parenthesis.
 
+### Popout
+
 You can also right cick on the chat card to pop it out in it's own window.  That way you can keep track of timers that are currently running.
 
 ## Bug Reporting
