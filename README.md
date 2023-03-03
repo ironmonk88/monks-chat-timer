@@ -7,7 +7,7 @@ Create a chat card to display a count down timer, allows you to either count up,
 Simply use the install module screen within the FoundryVTT setup
 
 ## Usage & Current Features
-*Requires the module Library: Chat Commands installed.*
+***Requires the module Library: Chat Commands installed.***
 
 ![monks-chat-timer](/screenshots/example.png)
 
@@ -15,13 +15,11 @@ Enter a chat command to create a chat card with a timer
 
 `/timer Number String (String)`
 
-```
-@param {Number}  The time to count in seconds.  Adding a negative value will count down to zero, otherwise it will count from zero up to the number.  You can also use time notation in case you want to specify something longer than seconds.
-
-@param {String}  A string to display in the chat card when it is created.
-
-@param ({String}) A followup string to display in a chat message when the timer completes.
-```
+> @param {Number}  The time to count in seconds.  Adding a negative value will count down to zero, otherwise it will count from zero up to the number.  You can also use time notation in case you want to specify something longer than seconds.
+>
+> @param {String}  A string to display in the chat card when it is created.
+>
+> @param ({String}) A followup string to display in a chat message when the timer completes.``
 
 *Examples*
 - `/timer 5` will add a timer that counts up 5 seconds
