@@ -28,6 +28,10 @@ Enter a chat command to create a chat card with a timer
 
 You can also right cick on the chat card to pop it out in it's own window.  That way you can keep track of timers that are currently running.
 
+## Monk's Little Details
+
+This feature was previously part of the Monk's Little Details module, but was split out so that the modules were easier to maintain and could concentrate on the function they did best.
+
 ## Bug Reporting
 Please feel free to contact me on discord if you have any questions or concerns. ironmonk88#4075
 
