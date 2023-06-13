@@ -33,6 +33,14 @@ export class MonksChatTimer {
         if (game.MonksChatTimer == undefined)
             game.MonksChatTimer = MonksChatTimer;
 
+        try {
+            Object.defineProperty(User.prototype, "isTheGM", {
+                get: function isTheGM() {
+                    return this == (game.users.find(u => u.hasRole("GAMEMASTER") && u.active) || game.users.find(u => u.hasRole("ASSISTANT") && u.active));
+                }
+            });
+        } catch { }
+
         MonksChatTimer.SOCKET = "module.monks-chat-timer";
 
         registerSettings();
@@ -55,7 +63,7 @@ export class MonksChatTimer {
         let frmtTime = new Date(calcTime < 0 ? 0 : calcTime).toISOString().substr(11, 8);
         let content = `<div class="timer-msg"><div class="timer-flavor">${options.flavor}</div><div class="timer-time">${frmtTime}</div><div class="timer-bar"><div></div></div><div class="complete-msg">Complete</div></div>`;
 
-        const speaker = { scene: canvas.scene.id, actor: game.user?.character?.id, token: null, alias: game.user?.name };
+        const speaker = ChatMessage._getSpeakerFromUser({ user: game.user });
 
         let messageData = {
             user: game.user.id,
@@ -84,43 +92,88 @@ Hooks.once('init', MonksChatTimer.init);
 Hooks.on("ready", MonksChatTimer.ready);
 
 Hooks.on("chatCommandsReady", (chatCommands) => {
-    chatCommands.registerCommand(chatCommands.createCommandFromData({
-        commandKey: "/timer",
-        invokeOnCommand: (chatlog, messageText, chatdata) => {
-            let regex = /^(?:(?:(-?[01]?\d|2[0-3]):)?(-?[0-5]?\d):)?(-?[0-5]?\d)|((.*?))?$/g;
-            let found = messageText.match(regex);
+    if (chatCommands.register != undefined) {
+        chatCommands.register({
+            name: "/timer",
+            module: "monks-chat-timer",
+            callback: (chatlog, messageText, chatdata) => {
+                let regex = /^(?:(?:(-?[01]?\d|2[0-3]):)?(-?[0-5]?\d):)?(-?[0-5]?\d)|((.*?))?$/g;
+                let found = messageText.match(regex);
 
-            let timePart = (found[0] || '5').split(':').reverse();
-            let time = ((Math.abs(timePart[0]) + (timePart.length > 1 ? Math.abs(timePart[1]) * 60 : 0) + (timePart.length > 2 ? Math.abs(timePart[2]) * 3600 : 0)) * 1000) * (found[0].startsWith('-') ? -1 : 1);
+                let timePart = (found[0] || '5').split(':').reverse();
+                let time = ((Math.abs(timePart[0]) + (timePart.length > 1 ? Math.abs(timePart[1]) * 60 : 0) + (timePart.length > 2 ? Math.abs(timePart[2]) * 3600 : 0)) * 1000) * (found[0].startsWith('-') ? -1 : 1);
 
-            let flavor = null;
-            if (found.length > 1)
-                flavor = found[1].trim();
-            regex = /(\((.*?)\))?$/g;
-            found = messageText.match(regex);
-            let followup = null;
-            if (found.length > 0) {
-                followup = found[0]
-                flavor = flavor.replace(followup, '').trim();
-                followup = followup.substr(1, followup.length - 2).trim();
-            }
-
-            chatdata.flags = {
-                core: { canPopout: true },
-                'monks-chat-timer': {
-                    time: time,
-                    start: Date.now(),
-                    flavor: flavor,
-                    followup: followup
+                let flavor = null;
+                if (found.length > 1)
+                    flavor = found[1].trim();
+                regex = /(\((.*?)\))?$/g;
+                found = messageText.match(regex);
+                let followup = null;
+                if (found.length > 0) {
+                    followup = found[0]
+                    flavor = flavor.replace(followup, '').trim();
+                    followup = followup.substr(1, followup.length - 2).trim();
                 }
-            };
-            let frmtTime = new Date(time < 0 ? 0 : time).toISOString().substr(11, 8);
-            return '<div class="timer-msg"><div class="timer-flavor">' + flavor + '</div><div class="timer-time">' + frmtTime + '</div><div class="timer-bar"><div></div></div><div class="complete-msg">Complete</div></div>';
-        },
-        shouldDisplayToChat: true,
-        iconClass: "fa-clock",
-        description: "Set countdown"
-    }));
+
+                chatdata.speaker = ChatMessage._getSpeakerFromUser({ user: game.user });
+                chatdata.flags = {
+                    core: { canPopout: true },
+                    'monks-chat-timer': {
+                        time: time,
+                        start: Date.now(),
+                        flavor: flavor,
+                        followup: followup
+                    }
+                };
+                let frmtTime = new Date(time < 0 ? 0 : time).toISOString().substr(11, 8);
+                return {
+                    content: '<div class="timer-msg"><div class="timer-flavor">' + flavor + '</div><div class="timer-time">' + frmtTime + '</div><div class="timer-bar"><div></div></div><div class="complete-msg">Complete</div></div>'
+                };
+            },
+            shouldDisplayToChat: true,
+            icon: '<i class="fas fa-clock"></i>',
+            description: "Create chat countdown timer"
+        });
+    } else {
+        chatCommands.registerCommand(chatCommands.createCommandFromData({
+            commandKey: "/timer",
+            invokeOnCommand: (chatlog, messageText, chatdata) => {
+                let regex = /^(?:(?:(-?[01]?\d|2[0-3]):)?(-?[0-5]?\d):)?(-?[0-5]?\d)|((.*?))?$/g;
+                let found = messageText.match(regex);
+
+                let timePart = (found[0] || '5').split(':').reverse();
+                let time = ((Math.abs(timePart[0]) + (timePart.length > 1 ? Math.abs(timePart[1]) * 60 : 0) + (timePart.length > 2 ? Math.abs(timePart[2]) * 3600 : 0)) * 1000) * (found[0].startsWith('-') ? -1 : 1);
+
+                let flavor = null;
+                if (found.length > 1)
+                    flavor = found[1].trim();
+                regex = /(\((.*?)\))?$/g;
+                found = messageText.match(regex);
+                let followup = null;
+                if (found.length > 0) {
+                    followup = found[0]
+                    flavor = flavor.replace(followup, '').trim();
+                    followup = followup.substr(1, followup.length - 2).trim();
+                }
+
+                chatdata.speaker = ChatMessage._getSpeakerFromUser({ user: game.user });
+                chatdata.flags = {
+                    core: { canPopout: true },
+                    'monks-chat-timer': {
+                        time: time,
+                        start: Date.now(),
+                        flavor: flavor,
+                        followup: followup
+                    }
+                };
+                let frmtTime = new Date(time < 0 ? 0 : time).toISOString().substr(11, 8);
+                return '<div class="timer-msg"><div class="timer-flavor">' + flavor + '</div><div class="timer-time">' + frmtTime + '</div><div class="timer-bar"><div></div></div><div class="complete-msg">Complete</div></div>';
+            },
+            shouldDisplayToChat: true,
+            iconClass: "fa-clock",
+            description: "Create chat countdown timer"
+        }));
+    }
 });
 
 Hooks.on("renderChatMessage", (message, html, data) => {
@@ -175,16 +228,18 @@ Hooks.on("renderChatMessage", (message, html, data) => {
                     $(content).addClass('complete');
                     updateTime(time, start);
                     //$('.timer-time', content).html((time < 0 ? Math.abs(time) - remaining : remaining) + ' sec');
-                    message.update({ content: content[0].outerHTML, flags: { 'monks-chat-timer': { 'complete': true } } });
-                    if (message.getFlag('monks-chat-timer', 'followup')) {
-                        ChatMessage.create({
-                            user: game.user.id,
-                            flavor: message.getFlag('monks-chat-timer', 'flavor'),
-                            content: message.getFlag('monks-chat-timer', 'followup'),
-                            speaker: message.speaker,
-                            type: CONST.CHAT_MESSAGE_TYPES.OOC,
-                            whisper: message.whisper
-                        }, {});
+                    if (game.user.isTheGM) {
+                        message.update({ content: content[0].outerHTML, flags: { 'monks-chat-timer': { 'complete': true } } });
+                        if (message.getFlag('monks-chat-timer', 'followup')) {
+                            ChatMessage.create({
+                                user: game.user.id,
+                                flavor: message.getFlag('monks-chat-timer', 'flavor'),
+                                content: message.getFlag('monks-chat-timer', 'followup'),
+                                speaker: null,
+                                type: CONST.CHAT_MESSAGE_TYPES.OOC,
+                                whisper: message.whisper
+                            }, {});
+                        }
                     }
 
                     window.clearInterval(timer);
