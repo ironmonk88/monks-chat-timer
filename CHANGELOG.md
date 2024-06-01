@@ -1,3 +1,11 @@
+# version 12.01
+
+v12 compatibility
+
+Added localization
+
+BREAKING CHANGE: switched from `/timer 5 Flavor String (Follow Up String)` to `/timer 5 flavor:Flavor String followup:Follow Up String`
+
 # version 11.01
 
 Added v11 compatibility

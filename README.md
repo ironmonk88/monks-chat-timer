@@ -11,18 +11,18 @@ Simply use the install module screen within the FoundryVTT setup
 
 Enter a chat command to create a chat card with a timer
 
-`/timer Number String (String)`
+`/timer Number flavor:String followup:String`
 
 > @param {Number}  The time to count in seconds.  Adding a negative value will count down to zero, otherwise it will count from zero up to the number.  You can also use time notation in case you want to specify something longer than seconds.
 >
-> @param {String}  A string to display in the chat card when it is created.
+> @param {String}  A string to display in the chat card when it is created.  This is optional.  Leaving out this tag will consider any string after the time to be flavor
 >
-> @param ({String}) A followup string to display in a chat message when the timer completes.``
+> @param {String} A followup string to display in a chat message when the timer completes.``
 
 *Examples*
 - `/timer 5` will add a timer that counts up 5 seconds
 - `/timer -5` will count down 5 seconds
-- `/timer 5:00 Send this message to the timer (Send this message after the timer is finished)` will add a timer that counts up 5 minutes, displaying the first message in the chat message with the timer.  And once the timer it complete it will send a second chat message with the second message that's in parenthesis.
+- `/timer 5:00 flavor:Send this message to the timer followup:Send this message after the timer is finished` will add a timer that counts up 5 minutes, displaying the first message in the chat message with the timer.  And once the timer it complete it will send a second chat message with the second message that's in parenthesis.
 
 ### Popout
 

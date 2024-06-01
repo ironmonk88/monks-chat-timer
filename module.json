@@ -1,7 +1,7 @@
 {
   "title": "Monk's Chat Timer",
   "description": "Create a chat card to display a count down timer, allows you to either count up, or count down. Display a message to the chat card, and send a followup message when the timer finishes.",
-  "version": "11.01",
+  "version": "12.01",
   "authors": [
     {
       "name": "IronMonk",
@@ -29,13 +29,13 @@
     "css/monks-chat-timer.css"
   ],
   "url": "https://github.com/ironmonk88/monks-chat-timer",
-  "download": "https://github.com/ironmonk88/monks-chat-timer/archive/11.01.zip",
+  "download": "https://github.com/ironmonk88/monks-chat-timer/archive/12.01.zip",
   "manifest": "https://github.com/ironmonk88/monks-chat-timer/releases/latest/download/module.json",
   "bugs": "https://github.com/ironmonk88/monks-chat-timer/issues",
   "id": "monks-chat-timer",
   "compatibility": {
     "minimum": "10",
-    "verified": "11"
+    "verified": "12"
   },
   "relationships": {
     "requires": [

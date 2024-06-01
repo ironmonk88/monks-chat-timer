@@ -61,7 +61,7 @@ export class MonksChatTimer {
         let calcTime = ((Math.abs(timePart[0]) + (timePart.length > 1 ? Math.abs(timePart[1]) * 60 : 0) + (timePart.length > 2 ? Math.abs(timePart[2]) * 3600 : 0)) * 1000) * (time.startsWith('-') ? -1 : 1);
 
         let frmtTime = new Date(calcTime < 0 ? 0 : calcTime).toISOString().substr(11, 8);
-        let content = `<div class="timer-msg"><div class="timer-flavor">${options.flavor}</div><div class="timer-time">${frmtTime}</div><div class="timer-bar"><div></div></div><div class="complete-msg">Complete</div></div>`;
+        let content = `<div class="timer-msg"><div class="timer-flavor">${options.flavor}</div><div class="timer-time">${frmtTime}</div><div class="timer-bar"><div></div></div><div class="complete-msg">${i18n('MonksChatTimer.Complete')}</div></div>`;
 
         const speaker = ChatMessage._getSpeakerFromUser({ user: game.user });
 
@@ -104,15 +104,15 @@ Hooks.on("chatCommandsReady", (chatCommands) => {
                 let time = ((Math.abs(timePart[0]) + (timePart.length > 1 ? Math.abs(timePart[1]) * 60 : 0) + (timePart.length > 2 ? Math.abs(timePart[2]) * 3600 : 0)) * 1000) * (found[0].startsWith('-') ? -1 : 1);
 
                 let flavor = null;
+                let followup = null;
                 if (found.length > 1)
                     flavor = found[1].trim();
-                regex = /(\((.*?)\))?$/g;
-                found = messageText.match(regex);
-                let followup = null;
-                if (found.length > 0) {
-                    followup = found[0]
-                    flavor = flavor.replace(followup, '').trim();
-                    followup = followup.substr(1, followup.length - 2).trim();
+                if (flavor && flavor.startsWith("flavor:"))
+                    flavor = flavor.substr(7).trim();
+                let idx = flavor.indexOf("followup:");
+                if (idx > -1) {
+                    followup = flavor.substr(idx + 9).trim();
+                    flavor = flavor.substr(0, idx).trim();
                 }
 
                 chatdata.speaker = ChatMessage._getSpeakerFromUser({ user: game.user });
@@ -127,12 +127,12 @@ Hooks.on("chatCommandsReady", (chatCommands) => {
                 };
                 let frmtTime = new Date(time < 0 ? 0 : time).toISOString().substr(11, 8);
                 return {
-                    content: '<div class="timer-msg"><div class="timer-flavor">' + flavor + '</div><div class="timer-time">' + frmtTime + '</div><div class="timer-bar"><div></div></div><div class="complete-msg">Complete</div></div>'
+                    content: `<div class="timer-msg"><div class="timer-flavor">${flavor}</div><div class="timer-time">${frmtTime}</div><div class="timer-bar"><div></div></div><div class="complete-msg">${i18n("MonksChatTimer.Complete")}</div></div>`
                 };
             },
             shouldDisplayToChat: true,
             icon: '<i class="fas fa-clock"></i>',
-            description: "Create chat countdown timer"
+            description: i18n("MonksChatTimer.CreateChatCountdownTimer")
         });
     } else {
         chatCommands.registerCommand(chatCommands.createCommandFromData({
@@ -145,15 +145,15 @@ Hooks.on("chatCommandsReady", (chatCommands) => {
                 let time = ((Math.abs(timePart[0]) + (timePart.length > 1 ? Math.abs(timePart[1]) * 60 : 0) + (timePart.length > 2 ? Math.abs(timePart[2]) * 3600 : 0)) * 1000) * (found[0].startsWith('-') ? -1 : 1);
 
                 let flavor = null;
+                let followup = null;
                 if (found.length > 1)
                     flavor = found[1].trim();
-                regex = /(\((.*?)\))?$/g;
-                found = messageText.match(regex);
-                let followup = null;
-                if (found.length > 0) {
-                    followup = found[0]
-                    flavor = flavor.replace(followup, '').trim();
-                    followup = followup.substr(1, followup.length - 2).trim();
+                if (flavor && flavor.startsWith("flavor:"))
+                    flavor = flavor.substr(7).trim();
+                let idx = flavor.indexOf("followup:");
+                if (idx > -1) {
+                    followup = flavor.substr(idx + 9).trim();
+                    flavor = flavor.substr(0, idx).trim();
                 }
 
                 chatdata.speaker = ChatMessage._getSpeakerFromUser({ user: game.user });
@@ -167,11 +167,11 @@ Hooks.on("chatCommandsReady", (chatCommands) => {
                     }
                 };
                 let frmtTime = new Date(time < 0 ? 0 : time).toISOString().substr(11, 8);
-                return '<div class="timer-msg"><div class="timer-flavor">' + flavor + '</div><div class="timer-time">' + frmtTime + '</div><div class="timer-bar"><div></div></div><div class="complete-msg">Complete</div></div>';
+                return `<div class="timer-msg"><div class="timer-flavor">${flavor}</div><div class="timer-time">${frmtTime}</div><div class="timer-bar"><div></div></div><div class="complete-msg">${i18n("MonksChatTimer.Complete")}</div></div>`
             },
             shouldDisplayToChat: true,
             iconClass: "fa-clock",
-            description: "Create chat countdown timer"
+            description: i18n("MonksChatTimer.CreateChatCountdownTimer")
         }));
     }
 });
@@ -257,33 +257,33 @@ Hooks.on("setupTileActions", (app) => {
         ctrls: [
             {
                 id: "duration",
-                name: "Duration",
+                name: i18n("MonksChatTimer.Duration"),
                 type: "text",
                 defvalue: "5",
                 required: true,
             },
             {
                 id: "for",
-                name: "For",
+                name: i18n("MonksChatTimer.For"),
                 list: "for",
                 type: "list",
             },
             {
                 id: "flavor",
-                name: "Flavor",
+                name: i18n("MonksChatTimer.Flavor"),
                 type: "text",
             },
             {
                 id: "followup",
-                name: "Follow-up",
+                name: i18n("MonksChatTimer.FollowUp"),
                 type: "text",
             },
         ],
         values: {
             'for': {
-                "everyone": 'Everyone',
-                "gm": 'GM Only',
-                'token': "Triggering Player"
+                "everyone": i18n("MonksChatTimer.for.Everyone"),
+                "gm": i18n("MonksChatTimer.for.GMOnly"),
+                'token': i18n("MonksChatTimer.for.TriggeringPlayer")
             }
         },
         group: 'monks-chat-timer',
